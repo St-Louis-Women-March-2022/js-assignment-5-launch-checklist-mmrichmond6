@@ -17,8 +17,8 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
 }
 
 function validateInput(testInput) {
-   
-}
+    
+}    
 
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoLevel) {
    
