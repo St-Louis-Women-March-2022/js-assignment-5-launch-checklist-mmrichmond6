@@ -1,19 +1,40 @@
-// import { validateInput } from './scriptHelper';
+// window.addEventListener("load", function(){
+//     // TODO: register the handler
+//     let form = document.getElementById("testForm");
+//     form.addEventListener("click", formSubmission);
+// });
+
+function validateInput(testInput) {
+    if (testInput === Number) {
+        console.log("Is a Number");
+        return "Is a Number";
+    } else if (isNaN(testInput) === true) {
+        console.log("Not a Number");
+        return "Not a Number";    
+    } else if (testInput === "") {
+        console.log("Empty");
+        return "Empty";
+    }
+};
+
+function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
+    document.getElementById("pilotStatus").value = pilot;
+    document.getElementById("copilotStatus").value = copilot;
+    if (fuelLevel < 10000) {
+        document.getElementById("fuelStatus").value = "Not enough fuel for the journey!";
+        document.getElementById("launchStatusCheck").style.color = "red";
+        document.getElementById("launchStatusCheck").value = "Shuttle is not ready for launch";
+    };
+    document.getElementById("faultyItems").style.visibility = 'visible';
+};
+
 
 window.addEventListener("load", function() {
+       
 
-    let pilot = document.querySelector("input[name=pilotName]");
-    let copilot = document.querySelector("input[name=copilotName]");
-    let fuelLevel = document.querySelector("input[name=fuelLevel]");
-    let cargoMass = document.querySelector("input[name=cargoMass]");
-
-    let pilotName = pilot.value;
-    let copilotName = copilot.value;
-    let fuelLevelNum = fuelLevel.value;
-    let cargoMassNum = cargoMass.value;
+let form = document.querySelector("form");
+form.addEventListener("submit", function(event) {    
     
-    let form = document.querySelector("form");
-    form.addEventListener("submit", function(event) {
     let pilot = document.querySelector("input[name=pilotName]");
     let copilot = document.querySelector("input[name=copilotName]");
     let fuelLevel = document.querySelector("input[name=fuelLevel]");
@@ -23,46 +44,48 @@ window.addEventListener("load", function() {
     let copilotName = copilot.value;
     let fuelLevelNum = fuelLevel.value;
     let cargoMassNum = cargoMass.value;
-                
-    if (pilot.value === "" || copilot.value === "" || fuelLevel.value === "" || cargoMass.value === "") {
-        alert("All fields are required!");
-        event.preventDefault();
-        return console.log("Empty");
-    } else if (!isNaN(pilotName)) {
+
+    if (!isNaN(pilotName) || pilot.value === "") {
+        validateInput(pilotName);
         alert(`Pilot name must be a string! ${pilotName}`);
         event.preventDefault();
-        return console.log("Is a number");
-    } else if (!isNaN(copilotName)) {
+    } else if (!isNaN(copilotName) || copilot.value === "") {
+        validateInput(copilotName);
         alert(`Co-pilot name must be a string! ${copilotName}`);
         event.preventDefault();
-        return console.log("Is a number");
-    } else if (isNaN(fuelLevelNum)) {
+    } else if (isNaN(fuelLevelNum) || fuelLevel.value === "") {
+        validateInput(fuelLevelNum);
         alert(`Fuel Level (L) must be a number! ${fuelLevelNum}`);
         event.preventDefault();
-        return console.log("Not a number");
-    } else if (isNaN(cargoMassNum)) {
+    } else if (isNaN(cargoMassNum) || cargoMass.value === "") {
+        validateInput(cargoMassNum);
         alert(`Cargo Mass (kg) must be a number! ${cargoMassNum}`);
         event.preventDefault();
-        return console.log("Not a number");
-    } else {
-        alert(`You are submitting the following information:  Pilot Name: ${pilotName}; Co-pilot Name: ${copilotName}; Fuel Level (L): ${fuelLevelNum}; Cargo Mass (kg): ${cargoMassNum}`);
-        return console.log(`Pilot Name: ${pilotName}; Co-pilot Name: ${copilotName}; Fuel Level (L): ${fuelLevelNum}; Cargo Mass (kg): ${cargoMassNum}`);
+    } else if (isNaN(pilotName) || isNaN(copilotName) || !isNaN(fuelLevelNum) || !isNaN(cargoMassNum)) {
+        pilot = pilotName;
+        copilot = copilotName;
+        fuelLevel = fuelLevelNum;
+        cargoMass = cargoMassNum;
+        
+        formSubmission;
     }
+    
 
+    
     });
-
+    
     
      
 
-   let listedPlanets;
-   // Set listedPlanetsResponse equal to the value returned by calling myFetch()
-   let listedPlanetsResponse;
-   listedPlanetsResponse.then(function (result) {
-       listedPlanets = result;
-       console.log(listedPlanets);
-   }).then(function () {
-       console.log(listedPlanets);
-       // Below this comment call the appropriate helper functions to pick a planet fom the list of planets and add that information to your destination.
-   })
+//    let listedPlanets;
+//    // Set listedPlanetsResponse equal to the value returned by calling myFetch()
+//    let listedPlanetsResponse;
+//    listedPlanetsResponse.then(function (result) {
+//        listedPlanets = result;
+//        console.log(listedPlanets);
+//    }).then(function () {
+//        console.log(listedPlanets);
+//        // Below this comment call the appropriate helper functions to pick a planet fom the list of planets and add that information to your destination.
+//    })
    
 });
