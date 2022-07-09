@@ -53,10 +53,65 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
     
 };
 
-//Use JSON to fill in the crew on the mission destination
-//I choose "Mars" which has an index of [3]
+
 //In scriptHelper.js, you have three functions for this task: myFetch(), pickPlanet(), and addDestinationInfo()
+//First, review the comments in addDestinationInfo(). 
+//This is the format of the innerHTML for the missionTarget div, which you can locate using the document parameter of addDestinationInfo()
+//addDestinationInfo() does not need to return anything
+//pickPlanet() takes in one argument: a list of planets.
+//Using Math.random(), return one planet from the list with a randomly-selected index
+//myFetch() has some of the code necessary for fetching planetary JSON, however, it is not complete.
+//You need to add the URL and return response.json()
+//First set listedPlanetsResponse equal to the value returned when calling myFetch()
+//This value is going to be a promise.
+//If we head to our browser and open up our developer tools, we can now see a list of the planets
+//Then using pickPlanet() and addDestinationInfo(), select a planet at random from listedPlanets and pass that information to addDestinationInfo()
+//Reload your page and check out your site to see the mission target information.
+async function myFetch() {
+    
+    let planetsReturned;
+
+    planetsReturned = await fetch("https://handlers.education.launchcode.org/static/planets.json").then( function(response) {
+        response.json().then((json) => {
+            console.log(json);
+            let result = json;
+            let number = 0;
+            number = [Math.floor(Math.random() * json.length)];
+            let planetPicked = json[number];
+            console.log(planetPicked);
+            // for(let i=0; i < json.length; i++) {
+                let div = document.getElementById("missionTarget");
+                let elem = document.createElement("div");
+                elem.innerHTML = `
+                <div class = "planets">
+                    <h2>Mission Destination</h2>
+                        <ol>
+                            <li>Name: ${planetPicked.name}</li>
+                            <li>Diameter: ${planetPicked.diameter}</li>
+                            <li>Star: ${planetPicked.star}</li>
+                            <li>Distance from Earth: ${planetPicked.distance}</li>
+                            <li>Number of Moons: ${planetPicked.moons}</li>
+                        </ol>
+                        <img src="${planetPicked.image}" class = "avatar">
+                </div>
+                `;
+                div.appendChild(elem); 
+
+                
+            });
+            return response.json;
+        });
+        return planetsReturned;    
+};
+
+function pickPlanet(planets) {
+    
+}
+
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
+
+        
+};
     // Here is the HTML formatting for our mission target div.
     /*
                  <h2>Mission Destination</h2>
@@ -69,7 +124,7 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
                  </ol>
                  <img src="">
     */
- }
+ 
 
 
 
@@ -115,6 +170,7 @@ form.addEventListener("submit", function(event) {
         items.style.visibility = 'visible';
         document.getElementById("pilotStatus").innerHTML = `Pilot ${pilotName} Ready!`;
         document.getElementById("copilotStatus").innerHTML = `Copilot ${copilotName} Ready!`;
+        myFetch();
         if (fuelLevelNum < 10000) {
             ready = false;
             fuelStatus.innerHTML = "Not enough fuel for the journey!";
@@ -138,7 +194,6 @@ form.addEventListener("submit", function(event) {
         if (ready) {
             launchStatus.style.color = 'green';
 			launchStatus.innerHTML = 'Shuttle is ready for launch';
-			// retrieveData();
         } else {
             items.style.visibility = 'visible'; 
             launchStatus.style.color = 'red';
@@ -148,19 +203,19 @@ form.addEventListener("submit", function(event) {
     }
     
 });
+
+});
     
     
      
 
-//    let listedPlanets;
-//    // Set listedPlanetsResponse equal to the value returned by calling myFetch()
-//    let listedPlanetsResponse;
-//    listedPlanetsResponse.then(function (result) {
-//        listedPlanets = result;
-//        console.log(listedPlanets);
-//    }).then(function () {
-//        console.log(listedPlanets);
-//        // Below this comment call the appropriate helper functions to pick a planet fom the list of planets and add that information to your destination.
-//    })
-   
-});
+let listedPlanets;
+// Set listedPlanetsResponse equal to the value returned by calling myFetch()
+let listedPlanetsResponse;
+listedPlanetsResponse.then(function (result) {
+    listedPlanets = result;
+    console.log(listedPlanets);
+}).then(function () {
+    console.log(listedPlanets);
+    // Below this comment call the appropriate helper functions to pick a planet fom the list of planets and add that information to your destination.
+})
