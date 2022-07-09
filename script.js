@@ -170,7 +170,7 @@ form.addEventListener("submit", function(event) {
         items.style.visibility = 'visible';
         document.getElementById("pilotStatus").innerHTML = `Pilot ${pilotName} Ready!`;
         document.getElementById("copilotStatus").innerHTML = `Copilot ${copilotName} Ready!`;
-        myFetch();
+        
         if (fuelLevelNum < 10000) {
             ready = false;
             fuelStatus.innerHTML = "Not enough fuel for the journey!";
@@ -194,10 +194,12 @@ form.addEventListener("submit", function(event) {
         if (ready) {
             launchStatus.style.color = 'green';
 			launchStatus.innerHTML = 'Shuttle is ready for launch';
+            myFetch();
         } else {
             items.style.visibility = 'visible'; 
             launchStatus.style.color = 'red';
 			launchStatus.innerHTML = 'Shuttle not ready for launch';
+            
         }
 
     }

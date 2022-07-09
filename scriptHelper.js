@@ -2,6 +2,8 @@
 require('isomorphic-fetch');
 
 window.addEventListener("load", function() {
+    
+
 
 function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
    // Here is the HTML formatting for our mission target div.
