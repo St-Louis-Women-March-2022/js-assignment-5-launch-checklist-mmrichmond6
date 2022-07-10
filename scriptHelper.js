@@ -79,14 +79,14 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
         alert(`Cargo Mass (kg) must be a number! ${cargoMass}`);
     } else {      
         faultyItems.style.visibility = 'visible';
-        pilotStatus.innerHTML = `Pilot ${pilot} Ready!`;
-        copilotStatus.innerHTML = `Copilot ${copilot} Ready!`;
+        pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
+        copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
         
         if (fuelLevel < 10000) {
             ready = false;
-            fuelStatus.innerHTML = "Not enough fuel for the journey!";
+            fuelStatus.innerHTML = "Fuel level too low for launch";
             fuelStatus.style.color = "red";
-            launchStatus.innerHTML = "Shuttle is not ready for launch";
+            launchStatus.innerHTML = "Shuttle Not Ready for Launch";
             launchStatus.style.color = "red";
         } else {
             fuelStatus.innerHTML = 'Fuel level high enough for launch';
@@ -94,25 +94,25 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
         }
         if (cargoMass > 10000) {
             ready = false;
-            cargoStatus.innerHTML = "Cargo mass too much for the shuttle to take off!";
+            cargoStatus.innerHTML = "Cargo mass too heavy for launch";
             cargoStatus.style.color = "red";
-            launchStatus.innerHTML = "Shuttle is not ready for launch";
+            launchStatus.innerHTML = "Shuttle Not Ready for Launch";
             launchStatus.style.color = "red";
         } else {
             cargoStatus.innerHTML = 'Cargo mass low enough for launch';
             cargoStatus.style.color = "black";
         }
         if (ready) {
-            faultyItems.style.visibility = 'hidden';
+            faultyItems.style.visibility = 'visible';
             pilotStatus.innerHTML = `Pilot Ready`;
             copilotStatus.innerHTML = `Co-pilot Ready`;
             launchStatus.style.color = 'green';
-			launchStatus.innerHTML = 'Shuttle is ready for launch';
+			launchStatus.innerHTML = 'Shuttle is Ready for Launch';
             return;
         } else {
             faultyItems.style.visibility = 'visible'; 
             launchStatus.style.color = 'red';
-			launchStatus.innerHTML = 'Shuttle not ready for launch';  
+			launchStatus.innerHTML = 'Shuttle Not Ready for Launch';  
         }
     } 
 });   
@@ -146,7 +146,7 @@ function pickPlanet(planets) {
     return planetChosen;
 }
 
-function addDestinationInfo(document, name, diameter, star, distance, moons, image) {
+function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {   
     document = this.document.querySelector("form");
     
     let div = this.document.getElementById("missionTarget");
@@ -161,7 +161,7 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
                         <li>Distance from Earth: ${distance}</li>
                         <li>Number of Moons: ${moons}</li>
                     </ol>
-                    <img src="${image}" class = "avatar">
+                    <img src="${imageUrl}" class = "avatar">
             </div>
             `;
             div.appendChild(elem);
