@@ -2,30 +2,6 @@
 require('isomorphic-fetch');
 
 window.addEventListener("load", function() {
-    
-
-
-    function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
-        document = this.document.querySelector("form");
-        planetPicked = json[pickPlanet()];
-                console.log(planetPicked);
-                    let div = document.getElementById("missionTarget");
-                    let elem = document.createElement("div");
-                    elem.innerHTML = `
-                    <div class = "planets">
-                        <h2>Mission Destination</h2>
-                            <ol>
-                                <li>Name: ${planetPicked.name}</li>
-                                <li>Diameter: ${planetPicked.diameter}</li>
-                                <li>Star: ${planetPicked.star}</li>
-                                <li>Distance from Earth: ${planetPicked.distance}</li>
-                                <li>Number of Moons: ${planetPicked.moons}</li>
-                            </ol>
-                            <img src="${planetPicked.image}" class = "avatar">
-                    </div>
-                    `;
-                    div.appendChild(elem);     
-    };
 
 function validateInput(testInput) {    
     if (testInput === "") {
@@ -109,28 +85,11 @@ async function myFetch() {
     let planetsReturned;
     planetsReturned = await fetch("https://handlers.education.launchcode.org/static/planets.json").then( function(response) {
     response.json().then((json) => {
-        console.log(json);
-        let number = 0;
-        number = [Math.floor(Math.random() * json.length)];
-        let planetPicked = json[number];
+        let length = json.length;
+        let index = pickPlanet(length);
+        let planetPicked = json[index];
         console.log(planetPicked);
-        // for(let i=0; i < json.length; i++) {
-            let div = document.getElementById("missionTarget");
-            let elem = document.createElement("div");
-            elem.innerHTML = `
-            <div class = "planets">
-                <h2>Mission Destination</h2>
-                    <ol>
-                        <li>Name: ${planetPicked.name}</li>
-                        <li>Diameter: ${planetPicked.diameter}</li>
-                        <li>Star: ${planetPicked.star}</li>
-                        <li>Distance from Earth: ${planetPicked.distance}</li>
-                        <li>Number of Moons: ${planetPicked.moons}</li>
-                    </ol>
-                    <img src="${planetPicked.image}" class = "avatar">
-            </div>
-            `;
-            div.appendChild(elem); 
+        addDestinationInfo(document, planetPicked.name, planetPicked.diameter, planetPicked.star, planetPicked.distance, planetPicked.moons, planetPicked.image);
         });
         return planetsReturned; 
     });
@@ -138,9 +97,30 @@ async function myFetch() {
 
 function pickPlanet(planets) {
     let number = 0;
-    number = [Math.floor(Math.random() * 6)];
+    number = [Math.floor(Math.random() * planets)];
     return number;
 }
+
+function addDestinationInfo(document, name, diameter, star, distance, moons, image) {
+    document = this.document.querySelector("form");
+    
+    let div = this.document.getElementById("missionTarget");
+    let elem = this.document.createElement("div");
+            elem.innerHTML = `
+            <div class = "planets">
+                <h2>Mission Destination</h2>
+                    <ol>
+                        <li>Name: ${name}</li>
+                        <li>Diameter: ${diameter}</li>
+                        <li>Star: ${star}</li>
+                        <li>Distance from Earth: ${distance}</li>
+                        <li>Number of Moons: ${moons}</li>
+                    </ol>
+                    <img src="${image}" class = "avatar">
+            </div>
+            `;
+            div.appendChild(elem);
+};
 
 module.exports.addDestinationInfo = addDestinationInfo;
 module.exports.validateInput = validateInput;

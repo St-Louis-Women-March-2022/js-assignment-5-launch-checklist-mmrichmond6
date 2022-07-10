@@ -20,25 +20,6 @@ listedPlanetsResponse.then(function (result) {
 })
 
 
-    
-    
-//     let listedPlanets;
-// // // Set listedPlanetsResponse equal to the value returned by calling myFetch()
-//     let listedPlanetsResponse = myFetch();
-//     console.log(myFetch());
-//     listedPlanetsResponse.then(function (result) {
-//         console.log(result);
-//         // listedPlanets = myFetch();
-//         console.log(listedPlanetsResults);
-// //     }).then(function () {
-// //         console.log(listedPlanets);
-// //         // Below this comment call the appropriate helper functions to pick a planet fom the list of planets and add that information to your destination.
-// //         myFetch();
-// //     })
-//     });
-//     });
-// });
-
 //GA5 should contain four fields:  pilot's name, copilot's name, fuel levels, mass of cargo
 //1.  use preventDefault() to prevent a request from being sent out and page reloading
 //2.  Validate
@@ -147,8 +128,6 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
 };
 
 
-
-
 //In scriptHelper.js, you have three functions for this task: myFetch(), pickPlanet(), and addDestinationInfo()
 //First, review the comments in addDestinationInfo(). 
 //This is the format of the innerHTML for the missionTarget div, which you can locate using the document parameter of addDestinationInfo()
@@ -166,27 +145,11 @@ async function myFetch() {
     let planetsReturned;
     planetsReturned = await fetch("https://handlers.education.launchcode.org/static/planets.json").then( function(response) {
     response.json().then((json) => {
-        console.log(json);
-        let number = 0;
-        number = [Math.floor(Math.random() * json.length)];
-        let planetPicked = json[number];
+        let length = json.length;
+        let index = pickPlanet(length);
+        let planetPicked = json[index];
         console.log(planetPicked);
-            let div = document.getElementById("missionTarget");
-            let elem = document.createElement("div");
-            elem.innerHTML = `
-            <div class = "planets">
-                <h2>Mission Destination</h2>
-                    <ol>
-                        <li>Name: ${planetPicked.name}</li>
-                        <li>Diameter: ${planetPicked.diameter}</li>
-                        <li>Star: ${planetPicked.star}</li>
-                        <li>Distance from Earth: ${planetPicked.distance}</li>
-                        <li>Number of Moons: ${planetPicked.moons}</li>
-                    </ol>
-                    <img src="${planetPicked.image}" class = "avatar">
-            </div>
-            `;
-            div.appendChild(elem); 
+        addDestinationInfo(document, planetPicked.name, planetPicked.diameter, planetPicked.star, planetPicked.distance, planetPicked.moons, planetPicked.image);
         });
         return planetsReturned; 
     });
@@ -194,42 +157,27 @@ async function myFetch() {
 
 function pickPlanet(planets) {
     let number = 0;
-    number = [Math.floor(Math.random() * 6)];
+    number = [Math.floor(Math.random() * planets)];
     return number;
 }
 
-function addDestinationInfo(document, name, diameter, star, distance, moons, imageUrl) {
+function addDestinationInfo(document, name, diameter, star, distance, moons, image) {
     document = this.document.querySelector("form");
     
-    planetPicked = json[pickPlanet()];
-            console.log(planetPicked);
-                let div = document.getElementById("missionTarget");
-                let elem = document.createElement("div");
-                elem.innerHTML = `
-                <div class = "planets">
-                    <h2>Mission Destination</h2>
-                        <ol>
-                            <li>Name: ${planetPicked.name}</li>
-                            <li>Diameter: ${planetPicked.diameter}</li>
-                            <li>Star: ${planetPicked.star}</li>
-                            <li>Distance from Earth: ${planetPicked.distance}</li>
-                            <li>Number of Moons: ${planetPicked.moons}</li>
-                        </ol>
-                        <img src="${planetPicked.image}" class = "avatar">
-                </div>
-                `;
-                div.appendChild(elem);     
+    let div = this.document.getElementById("missionTarget");
+    let elem = this.document.createElement("div");
+            elem.innerHTML = `
+            <div class = "planets">
+                <h2>Mission Destination</h2>
+                    <ol>
+                        <li>Name: ${name}</li>
+                        <li>Diameter: ${diameter}</li>
+                        <li>Star: ${star}</li>
+                        <li>Distance from Earth: ${distance}</li>
+                        <li>Number of Moons: ${moons}</li>
+                    </ol>
+                    <img src="${image}" class = "avatar">
+            </div>
+            `;
+            div.appendChild(elem);
 };
-    // Here is the HTML formatting for our mission target div.
-    /*
-                 <h2>Mission Destination</h2>
-                 <ol>
-                     <li>Name: </li>
-                     <li>Diameter: </li>
-                     <li>Star: ${star}</li>
-                     <li>Distance from Earth: </li>
-                     <li>Number of Moons: </li>
-                 </ol>
-                 <img src="">
-    */
- 
