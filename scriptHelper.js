@@ -48,7 +48,7 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
     let form = this.document.querySelector("form");
     form.addEventListener("submit", function(event) {    
     
-    // event.preventDefault();
+    event.preventDefault();
     
     
     document = form.querySelector("form");    
@@ -68,19 +68,15 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
     if (!isNaN(pilot) || pilot === "") {
         validateInput(pilotInput.value);
         alert(`Pilot name must be a string! ${pilot}`);
-        event.preventDefault();
     } else if (!isNaN(copilot) || copilot === "") {
         validateInput(copilotInput.value);
         alert(`Co-pilot name must be a string! ${copilot}`);
-        event.preventDefault();
     } else if (isNaN(fuelLevel) || fuelLevel === "") {
         validateInput(fuelLevelInput.value);
         alert(`Fuel Level (L) must be a number! ${fuelLevel}`);
-        event.preventDefault();
     } else if (isNaN(cargoMass) || cargoMass === "") {
         validateInput(cargoMassInput.value);
         alert(`Cargo Mass (kg) must be a number! ${cargoMass}`);
-        event.preventDefault();
     } else {      
         faultyItems.style.visibility = 'visible';
         pilotStatus.innerHTML = `Pilot ${pilot} Ready!`;
@@ -92,7 +88,6 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
             fuelStatus.style.color = "red";
             launchStatus.innerHTML = "Shuttle is not ready for launch";
             launchStatus.style.color = "red";
-            event.preventDefault();
         } else {
             fuelStatus.innerHTML = 'Fuel level high enough for launch';
             fuelStatus.style.color = "black";
@@ -103,7 +98,6 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
             cargoStatus.style.color = "red";
             launchStatus.innerHTML = "Shuttle is not ready for launch";
             launchStatus.style.color = "red";
-            event.preventDefault();
         } else {
             cargoStatus.innerHTML = 'Cargo mass low enough for launch';
             cargoStatus.style.color = "black";
@@ -118,8 +112,7 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
         } else {
             faultyItems.style.visibility = 'visible'; 
             launchStatus.style.color = 'red';
-			launchStatus.innerHTML = 'Shuttle not ready for launch';
-            event.preventDefault();   
+			launchStatus.innerHTML = 'Shuttle not ready for launch';  
         }
     } 
 });   
