@@ -7,6 +7,19 @@ window.addEventListener("load", function() {
     formSubmission();
     });
 });
+
+    let listedPlanets;
+// Set listedPlanetsResponse equal to the value returned by calling myFetch()
+let listedPlanetsResponse = myFetch();
+listedPlanetsResponse.then(function (result) {
+    listedPlanets = result;
+    console.log(listedPlanets);
+}).then(function () {
+    console.log(listedPlanets);
+    // Below this comment call the appropriate helper functions to pick a planet fom the list of planets and add that information to your destination.
+})
+
+
     
     
 //     let listedPlanets;
@@ -72,24 +85,29 @@ function validateInput(testInput) {
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
     document = this.document.querySelector("form");    
     
-    pilot = document.querySelector("input[name=pilotName]").value;
-    copilot = document.querySelector("input[name=copilotName]").value;
-    fuelLevel = document.querySelector("input[name=fuelLevel]").value;
-    cargoMass = document.querySelector("input[name=cargoMass]").value;
+    let pilotInput = document.querySelector("input[name=pilotName]");
+    let copilotInput = document.querySelector("input[name=copilotName]");
+    let fuelLevelInput = document.querySelector("input[name=fuelLevel]");
+    let cargoMassInput = document.querySelector("input[name=cargoMass]");
+
+    pilot = pilotInput.value;
+    copilot = copilotInput.value;
+    fuelLevel = fuelLevelInput.value;
+    cargoMass = cargoMassInput.value;
 
 	let ready = true;
 
     if (!isNaN(pilot) || pilot === "") {
-        validateInput();
+        validateInput(pilotInput.value);
         alert(`Pilot name must be a string! ${pilot}`);
     } else if (!isNaN(copilot) || copilot === "") {
-        validateInput();
+        validateInput(copilotInput.value);
         alert(`Co-pilot name must be a string! ${copilot}`);
     } else if (isNaN(fuelLevel) || fuelLevel === "") {
-        validateInput();
+        validateInput(fuelLevelInput.value);
         alert(`Fuel Level (L) must be a number! ${fuelLevel}`);
     } else if (isNaN(cargoMass) || cargoMass === "") {
-        validateInput();
+        validateInput(cargoMassInput.value);
         alert(`Cargo Mass (kg) must be a number! ${cargoMass}`);
     } else {      
         faultyItems.style.visibility = 'visible';
@@ -119,7 +137,7 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
         if (ready) {
             launchStatus.style.color = 'green';
 			launchStatus.innerHTML = 'Shuttle is ready for launch';
-            return myFetch();
+            return;
         } else {
             faultyItems.style.visibility = 'visible'; 
             launchStatus.style.color = 'red';
