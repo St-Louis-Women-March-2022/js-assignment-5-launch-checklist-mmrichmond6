@@ -1,8 +1,6 @@
 // Write your helper functions here!
 require('isomorphic-fetch');
 
-window.addEventListener("load", function() {
-
 //GA5 should contain four fields:  pilot's name, copilot's name, fuel levels, mass of cargo
 //1.  use preventDefault() to prevent a request from being sent out and page reloading
 //2.  Validate
@@ -47,12 +45,18 @@ function validateInput(testInput) {
 //  a.  change the text of launchStatus to green
 //  b.  display "Shuttle is ready for launch"
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
-    document = this.document.querySelector("form");    
+    let form = this.document.querySelector("form");
+    form.addEventListener("submit", function(event) {    
     
-    let pilotInput = document.querySelector("input[name=pilotName]");
-    let copilotInput = document.querySelector("input[name=copilotName]");
-    let fuelLevelInput = document.querySelector("input[name=fuelLevel]");
-    let cargoMassInput = document.querySelector("input[name=cargoMass]");
+    // event.preventDefault();
+    
+    
+    document = form.querySelector("form");    
+    
+    let pilotInput = launchForm.querySelector("input[name=pilotName]");
+    let copilotInput = launchForm.querySelector("input[name=copilotName]");
+    let fuelLevelInput = launchForm.querySelector("input[name=fuelLevel]");
+    let cargoMassInput = launchForm.querySelector("input[name=cargoMass]");
 
     pilot = pilotInput.value;
     copilot = copilotInput.value;
@@ -64,15 +68,19 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
     if (!isNaN(pilot) || pilot === "") {
         validateInput(pilotInput.value);
         alert(`Pilot name must be a string! ${pilot}`);
+        event.preventDefault();
     } else if (!isNaN(copilot) || copilot === "") {
         validateInput(copilotInput.value);
         alert(`Co-pilot name must be a string! ${copilot}`);
+        event.preventDefault();
     } else if (isNaN(fuelLevel) || fuelLevel === "") {
         validateInput(fuelLevelInput.value);
         alert(`Fuel Level (L) must be a number! ${fuelLevel}`);
+        event.preventDefault();
     } else if (isNaN(cargoMass) || cargoMass === "") {
         validateInput(cargoMassInput.value);
         alert(`Cargo Mass (kg) must be a number! ${cargoMass}`);
+        event.preventDefault();
     } else {      
         faultyItems.style.visibility = 'visible';
         pilotStatus.innerHTML = `Pilot ${pilot} Ready!`;
@@ -84,6 +92,7 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
             fuelStatus.style.color = "red";
             launchStatus.innerHTML = "Shuttle is not ready for launch";
             launchStatus.style.color = "red";
+            event.preventDefault();
         } else {
             fuelStatus.innerHTML = 'Fuel level high enough for launch';
             fuelStatus.style.color = "black";
@@ -94,20 +103,26 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
             cargoStatus.style.color = "red";
             launchStatus.innerHTML = "Shuttle is not ready for launch";
             launchStatus.style.color = "red";
+            event.preventDefault();
         } else {
-            cargoStatus.innerHTML = 'Cargo mass low enough to take off!';
+            cargoStatus.innerHTML = 'Cargo mass low enough for launch';
             cargoStatus.style.color = "black";
         }
         if (ready) {
+            faultyItems.style.visibility = 'hidden';
+            pilotStatus.innerHTML = `Pilot Ready`;
+            copilotStatus.innerHTML = `Co-pilot Ready`;
             launchStatus.style.color = 'green';
 			launchStatus.innerHTML = 'Shuttle is ready for launch';
             return;
         } else {
             faultyItems.style.visibility = 'visible'; 
             launchStatus.style.color = 'red';
-			launchStatus.innerHTML = 'Shuttle not ready for launch';   
+			launchStatus.innerHTML = 'Shuttle not ready for launch';
+            event.preventDefault();   
         }
-    }    
+    } 
+});   
 };
 
 
@@ -158,8 +173,6 @@ function addDestinationInfo(document, name, diameter, star, distance, moons, ima
             `;
             div.appendChild(elem);
 };
-
-});
 
 module.exports.addDestinationInfo = addDestinationInfo;
 module.exports.validateInput = validateInput;
