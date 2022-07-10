@@ -4,20 +4,23 @@ window.addEventListener("load", function() {
     
     event.preventDefault();
 	event.stopPropagation();
+    
     formSubmission();
     });
 });
 
     let listedPlanets;
 // Set listedPlanetsResponse equal to the value returned by calling myFetch()
-let listedPlanetsResponse = myFetch();
-listedPlanetsResponse.then(function (result) {
+    let listedPlanetsResponse = myFetch();
+    listedPlanetsResponse.then(function (result) {   
     listedPlanets = result;
-    console.log(listedPlanets);
+
 }).then(function () {
-    console.log(listedPlanets);
     // Below this comment call the appropriate helper functions to pick a planet fom the list of planets and add that information to your destination.
-})
+    let planetPicked = pickPlanet(listedPlanets);
+    addDestinationInfo(document, planetPicked.name, planetPicked.diameter, planetPicked.star, planetPicked.distance, planetPicked.moons, planetPicked.image);
+});
+
 
 
 //GA5 should contain four fields:  pilot's name, copilot's name, fuel levels, mass of cargo
@@ -142,23 +145,17 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
 //Then using pickPlanet() and addDestinationInfo(), select a planet at random from listedPlanets and pass that information to addDestinationInfo()
 //Reload your page and check out your site to see the mission target information.
 async function myFetch() {    
-    let planetsReturned;
-    planetsReturned = await fetch("https://handlers.education.launchcode.org/static/planets.json").then( function(response) {
-    response.json().then((json) => {
-        let length = json.length;
-        let index = pickPlanet(length);
-        let planetPicked = json[index];
-        console.log(planetPicked);
-        addDestinationInfo(document, planetPicked.name, planetPicked.diameter, planetPicked.star, planetPicked.distance, planetPicked.moons, planetPicked.image);
-        });
-        return planetsReturned; 
-    });
+
+    const response = await fetch("https://handlers.education.launchcode.org/static/planets.json");
+    const planetsReturned = await response.json();
+    return planetsReturned;
 }
 
 function pickPlanet(planets) {
     let number = 0;
-    number = [Math.floor(Math.random() * planets)];
-    return number;
+    number = [Math.floor(Math.random() * planets.length)];
+    let planetChosen = planets[number];
+    return planetChosen;
 }
 
 function addDestinationInfo(document, name, diameter, star, distance, moons, image) {
