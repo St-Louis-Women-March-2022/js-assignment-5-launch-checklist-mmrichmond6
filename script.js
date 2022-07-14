@@ -1,5 +1,15 @@
+
+
+
 window.addEventListener("load", function() {  
+
+    let form = this.document.querySelector("form");
+    form.addEventListener("submit", function(event) {    
+    
+
     formSubmission();
+
+    event.preventDefault();
 });
 
     let listedPlanets;
@@ -14,3 +24,5 @@ window.addEventListener("load", function() {
     addDestinationInfo(document, planetPicked.name, planetPicked.diameter, planetPicked.star, planetPicked.distance, planetPicked.moons, planetPicked.image);
 });
 
+
+});

@@ -15,15 +15,27 @@ require('isomorphic-fetch');
 //validateInput() should take in a string as a parameter and return "Empty", "Not a Number", or "Is a Number" as appropriate.
 //In scriptHelper.js, you will use validateInput() to complete the formSubmission() function. 
 function validateInput(testInput) {    
+    let pilot = launchForm.querySelector("input[name=pilotName]");
+    let copilot = launchForm.querySelector("input[name=copilotName]");
+    let fuelLevel = launchForm.querySelector("input[name=fuelLevel]");
+    let cargoMass = launchForm.querySelector("input[name=cargoMass]");
+
+
+
     if (testInput === "") {
-        console.log("Empty");
+        // console.log("Empty");
+        // alert(`All fields are required.`);
         return "Empty";
-    } else if (isNaN(testInput) === false) {
-        console.log("Is a Number");
+    } else if ((isNaN(testInput)) && ((testInput === fuelLevel.value) || (testInput === cargoMass.value))) {
+        // console.log("Not a Number");
+        // alert(`Fuel Level and Cargo Mass cannot be a string.`);
+        return "Not a Number";
+    } else if ((!isNaN(testInput)) && ((testInput === pilot.value) || (testInput === copilot.value))) {
+        // console.log("Is a Number");
+        // alert(`Pilot and Co-Pilot cannot be a number.`);
         return "Is a Number";
-    } else if (isNaN(testInput) === true) {
-        console.log("Not a Number");
-        return "Not a Number";    
+    } else {
+        return true;
     }
 };
 
@@ -45,44 +57,40 @@ function validateInput(testInput) {
 //  a.  change the text of launchStatus to green
 //  b.  display "Shuttle is ready for launch"
 function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
-    let form = this.document.querySelector("form");
-    form.addEventListener("submit", function(event) {    
-    
-    event.preventDefault();
-    
-    
-    document = form.querySelector("form");    
-    
-    let pilotInput = launchForm.querySelector("input[name=pilotName]");
-    let copilotInput = launchForm.querySelector("input[name=copilotName]");
-    let fuelLevelInput = launchForm.querySelector("input[name=fuelLevel]");
-    let cargoMassInput = launchForm.querySelector("input[name=cargoMass]");
-
-    pilot = pilotInput.value;
-    copilot = copilotInput.value;
-    fuelLevel = fuelLevelInput.value;
-    cargoMass = cargoMassInput.value;
+  
+    pilot = launchForm.querySelector("input[name=pilotName]").value;
+    copilot = launchForm.querySelector("input[name=copilotName]").value;
+    fuelLevel = launchForm.querySelector("input[name=fuelLevel]").value;
+    cargoMass = launchForm.querySelector("input[name=cargoMass]").value;
 
 	let ready = true;
 
-    if (!isNaN(pilot) || pilot === "") {
-        validateInput(pilotInput.value);
+    if (validateInput(pilot) !== true) {
+        ready = false;
         alert(`Pilot name must be a string! ${pilot}`);
-    } else if (!isNaN(copilot) || copilot === "") {
-        validateInput(copilotInput.value);
-        alert(`Co-pilot name must be a string! ${copilot}`);
-    } else if (isNaN(fuelLevel) || fuelLevel === "") {
-        validateInput(fuelLevelInput.value);
-        alert(`Fuel Level (L) must be a number! ${fuelLevel}`);
-    } else if (isNaN(cargoMass) || cargoMass === "") {
-        validateInput(cargoMassInput.value);
-        alert(`Cargo Mass (kg) must be a number! ${cargoMass}`);
+        faultyItems.style.visibility = 'visible';
+        pilotStatus.innerHTML = `Pilot is not ready for launch`;
     } else {      
         faultyItems.style.visibility = 'visible';
         pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
+    };
+    
+    if (validateInput(copilot) !== true) {
+        ready = false;
+        alert(`Co-pilot name must be a string! ${copilot}`);
+        faultyItems.style.visibility = 'visible';
+        copilotStatus.innerHTML = `Co-pilot is not ready for launch`;
+    } else {      
+        faultyItems.style.visibility = 'visible';
         copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
-        
-        if (fuelLevel < 10000) {
+    }; 
+       
+    if (validateInput(fuelLevel) !== true) {
+        ready = false;
+        alert(`Fuel Level (L) must be a number! ${fuelLevel}`);
+        faultyItems.style.visibility = 'visible';
+        fuelStatus.innerHTML = `Fuel level information isufficient for launch`;    
+    } else if (fuelLevel < 10000) {
             ready = false;
             fuelStatus.innerHTML = "Fuel level too low for launch";
             fuelStatus.style.color = "red";
@@ -92,7 +100,13 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
             fuelStatus.innerHTML = 'Fuel level high enough for launch';
             fuelStatus.style.color = "black";
         }
-        if (cargoMass > 10000) {
+
+    if (validateInput(cargoMass) !== true) {
+            ready = false;
+            alert(`Cargo Mass (kg) must be a number! ${cargoMass}`);
+            faultyItems.style.visibility = 'visible';
+            cargoStatus.innerHTML = `Cargo mass information isufficient for launch`; 
+        } else if (cargoMass > 10000) {
             ready = false;
             cargoStatus.innerHTML = "Cargo mass too heavy for launch";
             cargoStatus.style.color = "red";
@@ -102,21 +116,18 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
             cargoStatus.innerHTML = 'Cargo mass low enough for launch';
             cargoStatus.style.color = "black";
         }
+        
         if (ready) {
             faultyItems.style.visibility = 'visible';
-            pilotStatus.innerHTML = `Pilot Ready`;
-            copilotStatus.innerHTML = `Co-pilot Ready`;
             launchStatus.style.color = 'green';
 			launchStatus.innerHTML = 'Shuttle is Ready for Launch';
-            return;
         } else {
             faultyItems.style.visibility = 'visible'; 
             launchStatus.style.color = 'red';
 			launchStatus.innerHTML = 'Shuttle Not Ready for Launch';  
         }
     } 
-});   
-};
+
 
 
 //In scriptHelper.js, you have three functions for this task: myFetch(), pickPlanet(), and addDestinationInfo()
