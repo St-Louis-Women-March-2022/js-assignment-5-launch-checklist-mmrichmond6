@@ -20,19 +20,11 @@ function validateInput(testInput) {
     let fuelLevel = launchForm.querySelector("input[name=fuelLevel]");
     let cargoMass = launchForm.querySelector("input[name=cargoMass]");
 
-
-
     if (testInput === "") {
-        // console.log("Empty");
-        // alert(`All fields are required.`);
         return "Empty";
     } else if ((isNaN(testInput)) && ((testInput === fuelLevel.value) || (testInput === cargoMass.value))) {
-        // console.log("Not a Number");
-        // alert(`Fuel Level and Cargo Mass cannot be a string.`);
         return "Not a Number";
     } else if ((!isNaN(testInput)) && ((testInput === pilot.value) || (testInput === copilot.value))) {
-        // console.log("Is a Number");
-        // alert(`Pilot and Co-Pilot cannot be a number.`);
         return "Is a Number";
     } else {
         return true;
