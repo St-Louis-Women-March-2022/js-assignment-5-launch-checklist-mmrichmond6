@@ -14,21 +14,14 @@ require('isomorphic-fetch');
 
 //validateInput() should take in a string as a parameter and return "Empty", "Not a Number", or "Is a Number" as appropriate.
 //In scriptHelper.js, you will use validateInput() to complete the formSubmission() function. 
-function validateInput(testInput) {    
-    let pilot = launchForm.querySelector("input[name=pilotName]");
-    let copilot = launchForm.querySelector("input[name=copilotName]");
-    let fuelLevel = launchForm.querySelector("input[name=fuelLevel]");
-    let cargoMass = launchForm.querySelector("input[name=cargoMass]");
-
-    if (testInput === "") {
-        return "Empty";
-    } else if ((isNaN(testInput)) && ((testInput === fuelLevel.value) || (testInput === cargoMass.value))) {
-        return "Not a Number";
-    } else if ((!isNaN(testInput)) && ((testInput === pilot.value) || (testInput === copilot.value))) {
-        return "Is a Number";
-    } else {
-        return true;
-    }
+function validateInput(testInput) {   
+        if (testInput === "") {
+            return "Empty";
+        } else if (isNaN(testInput)) {
+            return "Not a Number";
+        } else if (!isNaN(testInput)) {
+            return "Is a Number";
+        }; 
 };
 
 //formSubmission() will take in a document parameter and strings representing the pilot, co-pilot, fuel level, and cargo mass.
@@ -57,68 +50,74 @@ function formSubmission(document, list, pilot, copilot, fuelLevel, cargoMass) {
 
 	let ready = true;
 
-    if (validateInput(pilot) !== true) {
+    if (validateInput(pilot) === "Not a Number") {
+        faultyItems.style.visibility = 'visible';
+        pilotStatus.style.color = 'black';
+        pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;  
+    } else {      
         ready = false;
         alert(`Pilot name must be a string! ${pilot}`);
         faultyItems.style.visibility = 'visible';
+        pilotStatus.style.color = 'red';
         pilotStatus.innerHTML = `Pilot is not ready for launch`;
-    } else {      
-        faultyItems.style.visibility = 'visible';
-        pilotStatus.innerHTML = `Pilot ${pilot} is ready for launch`;
     };
     
-    if (validateInput(copilot) !== true) {
+    if (validateInput(copilot) === "Not a Number") {
+        faultyItems.style.visibility = 'visible';
+        copilotStatus.style.color = 'black';
+        copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
+    } else {      
         ready = false;
         alert(`Co-pilot name must be a string! ${copilot}`);
         faultyItems.style.visibility = 'visible';
+        copilotStatus.style.color = 'red';
         copilotStatus.innerHTML = `Co-pilot is not ready for launch`;
-    } else {      
-        faultyItems.style.visibility = 'visible';
-        copilotStatus.innerHTML = `Co-pilot ${copilot} is ready for launch`;
     }; 
        
-    if (validateInput(fuelLevel) !== true) {
+    if ((validateInput(fuelLevel) === "Is a Number") && (fuelLevel >= 10000)) {
+        fuelStatus.innerHTML = 'Fuel level high enough for launch';
+        fuelStatus.style.color = "black";       
+    } else if (validateInput(fuelLevel) === "Is a Number") {
+        ready = false;
+        fuelStatus.innerHTML = "Fuel level too low for launch";
+        fuelStatus.style.color = "red";
+        launchStatus.innerHTML = "Shuttle Not Ready for Launch";
+        launchStatus.style.color = "red";
+    } else {
         ready = false;
         alert(`Fuel Level (L) must be a number! ${fuelLevel}`);
         faultyItems.style.visibility = 'visible';
-        fuelStatus.innerHTML = `Fuel level information isufficient for launch`;    
-    } else if (fuelLevel < 10000) {
-            ready = false;
-            fuelStatus.innerHTML = "Fuel level too low for launch";
-            fuelStatus.style.color = "red";
-            launchStatus.innerHTML = "Shuttle Not Ready for Launch";
-            launchStatus.style.color = "red";
-        } else {
-            fuelStatus.innerHTML = 'Fuel level high enough for launch';
-            fuelStatus.style.color = "black";
-        }
+        fuelStatus.style.color = 'red';
+        fuelStatus.innerHTML = `Fuel level information insufficient for launch`;
+    }
 
-    if (validateInput(cargoMass) !== true) {
-            ready = false;
-            alert(`Cargo Mass (kg) must be a number! ${cargoMass}`);
-            faultyItems.style.visibility = 'visible';
-            cargoStatus.innerHTML = `Cargo mass information isufficient for launch`; 
-        } else if (cargoMass > 10000) {
-            ready = false;
-            cargoStatus.innerHTML = "Cargo mass too heavy for launch";
-            cargoStatus.style.color = "red";
-            launchStatus.innerHTML = "Shuttle Not Ready for Launch";
-            launchStatus.style.color = "red";
-        } else {
-            cargoStatus.innerHTML = 'Cargo mass low enough for launch';
-            cargoStatus.style.color = "black";
-        }
+    if ((validateInput(cargoMass) === "Is a Number") && (cargoMass <= 10000)) {
+        cargoStatus.innerHTML = 'Cargo mass low enough for launch';
+        cargoStatus.style.color = "black";    
+    } else if (validateInput(cargoMass) === "Is a Number") {
+        ready = false;
+        cargoStatus.innerHTML = "Cargo mass too heavy for launch";
+        cargoStatus.style.color = "red";
+        launchStatus.innerHTML = "Shuttle Not Ready for Launch";
+        launchStatus.style.color = "red";
+    } else {
+        ready = false;
+        alert(`Cargo Mass (kg) must be a number! ${cargoMass}`);
+        faultyItems.style.visibility = 'visible';
+        cargoStatus.style.color = 'red';
+        cargoStatus.innerHTML = `Cargo mass information insufficient for launch`; 
+    }
         
-        if (ready) {
-            faultyItems.style.visibility = 'visible';
-            launchStatus.style.color = 'green';
-			launchStatus.innerHTML = 'Shuttle is Ready for Launch';
-        } else {
-            faultyItems.style.visibility = 'visible'; 
-            launchStatus.style.color = 'red';
-			launchStatus.innerHTML = 'Shuttle Not Ready for Launch';  
-        }
-    } 
+    if (ready) {
+        faultyItems.style.visibility = 'visible';
+        launchStatus.style.color = 'green';
+		launchStatus.innerHTML = 'Shuttle is Ready for Launch';
+    } else {
+        faultyItems.style.visibility = 'visible'; 
+        launchStatus.style.color = 'red';
+		launchStatus.innerHTML = 'Shuttle Not Ready for Launch';  
+    }
+} 
 
 
 
